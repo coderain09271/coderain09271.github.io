@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+  {{ if .IsHome }}
+  <meta http-equiv="refresh" content="0; url=/about/">
+  <link rel="canonical" href="{{ "/about/" | absURL }}">
+  {{ end }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}());</script>
+  {{ if or .Params.math .Site.Params.math }}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ]
+    });"></script>
+  {{ end }}
+</head>
+<body>
+  <header>
+    <div class="header-row">
+      <a href="/" class="site-title">Coderain</a>
+      <nav>
+        <a href="/about/">About</a>
+        <a href="/posts/">Posts</a>
+        <a href="/categories/">Categories</a>
+        <a href="/tags/">Tags</a>
+      </nav>
+      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+    </div>
+    <svg class="header-trace" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="0,40 60,42 120,38 180,44 220,20 260,46 320,40 380,15 400,50 460,40 520,36 580,42 640,10 660,48 720,40 780,44 840,18 880,46 940,40 1000,38 1060,44 1100,25 1140,42 1200,40" />
+    </svg>
+  </header>
+  <main>
+    {{- block "main" . }}{{- end }}
+  </main>
+  <footer>
+  </footer>
+  <script>
+    function toggleTheme() {
+      var html = document.documentElement;
+      var current = html.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      var next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀' : '☾';
+    }
+    (function() {
+      var stored = localStorage.getItem('theme');
+      var isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.getElementById('theme-toggle').textContent = isDark ? '☀' : '☾';
+    }());
+  </script>
+</body>
+</html>
